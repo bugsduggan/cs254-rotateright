@@ -6,20 +6,11 @@
 ; Init
 .ORIG x3000
 
-;
-; This is just here so I can test it. If it's still here when I hand-in, I am
-; a fool and should really pay more attention to what I'm doing, sorry.
-;
-
-AND R0, R0, x0000
-AND R1, R1, x0000
-ADD R0, R0, x0007
-ADD R1, R1, x0003
-
-; END OF TEST SETUP
-
 ; Check input conditions
 ; R1 > 0 and R1 < 16
+LD  R3, ERRMASK ; xFFF0
+AND R3, R1, R3 ; This will result in 0 if R1 is sane
+BRnp ERROR
 
 ;
 ; The main loop
@@ -45,10 +36,16 @@ DIV  ADD R3, R3, x0001 ; Increment counter
      NOT R0, R0 ; End of or routine
 FIN  ADD R1, R1, xFFFF ; Decrement the counter
      BRp LOOP ; If it's > 0, go around again
+     ADD R1, R1, x0001 ; Signal successful completion
+     BRnzp EXIT ; Jump to the end
 
 ; Error!
 ; Set R1 to -1 and return
+ERROR AND R1, R1, x0000
+      ADD R1, R1, xFFFF
+EXIT  RET
 
 ; Data & end
+ERRMASK .FILL xFFF0
 MSBMASK .FILL x8000
 .END
