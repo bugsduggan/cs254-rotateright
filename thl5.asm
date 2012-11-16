@@ -30,7 +30,7 @@ DIV  ADD R3, R3, x0001 ; Increment counter
      BRnz FIN ; R2 is not positive, skip ahead
 ; To set the MSB back to 1, we need to OR R0 with x8000
      LD R3, MSBMASK ; Load x8000 into R3
-     NOT R0, R0 ; Start the or (X or Y = not(not(x) and not(y))j
+     NOT R0, R0 ; Start the or (X or Y = not(not(x) and not(y))
      NOT R3, R3
      AND R0, R0, R3
      NOT R0, R0 ; End of or routine
