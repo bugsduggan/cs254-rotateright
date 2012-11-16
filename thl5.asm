@@ -28,7 +28,7 @@ DIV  ADD R3, R3, x0001 ; Increment counter
 ; So now if R2 is positive, we need to add x8000
      AND R2, R2, xFFFF ; Set status registers based on R2
      BRnz FIN ; R2 is not positive, skip ahead
-; To set the MSB back to 1, we need to or R0 with x8000
+; To set the MSB back to 1, we need to OR R0 with x8000
      LD R3, MSBMASK ; Load x8000 into R3
      NOT R0, R0 ; Start the or (X or Y = not(not(x) and not(y))j
      NOT R3, R3
