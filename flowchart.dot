@@ -1,4 +1,6 @@
 digraph flowchart {
+  graph [label = "thl5 Rotate Right", nodesep = 0.8];
+
   node [shape = diamond, label = "Sane input?\n(R1 > 0 and R1 < 16)"] input;
   node [shape = box, label = "Zero other registers\n(R2 and R3)"] zero;
   node [shape = box, label = "Set R1 to -1"] fail;
