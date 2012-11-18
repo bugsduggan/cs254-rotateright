@@ -1,0 +1,41 @@
+digraph flowchart {
+  node [shape = diamond, label = "Sane input?\n(R1 > 0 and R1 < 16)"] input;
+  node [shape = box, label = "Zero other registers\n(R2 and R3)"] zero;
+  node [shape = box, label = "Set R1 to -1"] fail;
+  node [shape = diamond, label = "Does LSB = 1?"] check_lsb;
+  node [shape = box, label = "Set R2 = 1"] set_flag;
+  node [shape = box, label = "Make R0 even\n(R0 -= 1)"] dec_r0;
+  node [shape = box, label = "Increment division counter\n(R3++)"] inc_div;
+  node [shape = box, label = "Subtract 2 from R0\n(R0 += -2)"] div;
+  node [shape = diamond, label = "Is R0 = 0?"] chk_div;
+  node [shape = box, label = "Copy division result from R3 to R0"] cpy_div;
+  node [shape = diamond, label = "Did we start with an odd number?\n(R2 = 1?)"] chk_flag;
+  node [shape = box, label = "Load the MSB mask into R3"] load_mask;
+  node [shape = box, label = "Set MSB to 1\n(R0 or R3)"] or_msb;
+  node [shape = box, label = "Decrement the counter\n(R1--)"] dec_count;
+  node [shape = diamond, label = "Have we finished?\n(R1 = 0?)"] chk_count;
+  node [shape = box, label = "Indicate success\n(R1 = 1)"] success;
+  node [shape = ellipse, label = "Return"] return;
+
+  input -> fail [label = "No"];
+  input -> zero [label = "Yes"];
+  zero -> check_lsb;
+  check_lsb -> set_flag [label = "Yes"];
+  set_flag -> dec_r0;
+  dec_r0 -> inc_div;
+  check_lsb -> inc_div [label = "No"];
+  inc_div -> div;
+  div -> chk_div;
+  chk_div -> inc_div [label = "No"];
+  chk_div -> cpy_div [label = "Yes"];
+  cpy_div -> chk_flag;
+  chk_flag -> load_mask [label = "Yes"];
+  load_mask -> or_msb;
+  or_msb -> dec_count;
+  chk_flag -> dec_count [label = "No"];
+  dec_count -> chk_count;
+  chk_count -> zero [label = "No"];
+  chk_count -> success [label = "Yes"];
+  success -> return;
+  fail -> return;
+}
